@@ -25,7 +25,7 @@ class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final RouterConfigGO _router = new RouterConfigGO();
+    final RouterConfigGO router = RouterConfigGO();
     return MaterialApp.router(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
@@ -38,7 +38,7 @@ class App extends StatelessWidget {
           seedColor: const Color.fromARGB(255, 255, 255, 255),
         ),
       ),
-      routerConfig: _router.router,
+      routerConfig: router.router,
     );
   }
 }

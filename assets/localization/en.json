@@ -2,5 +2,9 @@
     "notebook": "Notebook",
     "notes": "Your notes will go here",
     "settings": "Settings",
-    "language": "Language"
+    "language": "Language",
+    "note": "Note",
+    "description": "Description",
+    "title": "Title",
+    "notitle": "No title"
 }
