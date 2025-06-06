@@ -28,30 +28,14 @@ class _NotebookState extends State<Notebook> {
         ),
         centerTitle: true,
         actions: [
-          PopupMenuButton<String>(
-            icon: Icon(Icons.more_vert, color: BrandColors.block),
-            color: BrandColors.darkbackground,
-            surfaceTintColor: Colors.transparent,
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem<String>(
-                    value: 'settings',
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Icon(Icons.settings, color: BrandColors.purple),
-                        const SizedBox(width: 12),
-                        Text(
-                          context.tr('settings'),
-                          style: TextStyle(color: BrandColors.block),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-            onSelected: (value) {
-              context.go('/settings');
-            },
+          Row(
+            children: [
+              IconButton(
+                onPressed: () => context.go('/settings'),
+                icon: Icon(Icons.settings, color: BrandColors.purple),
+              ),
+              const SizedBox(width: 6),
+            ],
           ),
         ],
       ),

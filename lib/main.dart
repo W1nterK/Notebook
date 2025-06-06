@@ -12,7 +12,7 @@ void main() async {
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ru')],
       path:
-          'assets/localization/', // <-- change the path of the translation files
+          'assets/localization', // <-- change the path of the translation files
       fallbackLocale: Locale('en'),
       child: App(),
     ),
