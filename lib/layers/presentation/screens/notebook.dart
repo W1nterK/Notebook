@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:matule/core/colors/brand_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class Notebookf extends StatefulWidget {
   Notebookf({super.key});
@@ -13,6 +15,57 @@ class Notebookf extends StatefulWidget {
 
 class _NotebookfState extends State<Notebookf> {
   final List<Map<String, dynamic>> _notes = [];
+  String _sortBy = 'newest';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotes();
+    _loadSortPreference();
+  }
+
+  Future<void> _loadNotes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final notesJson = prefs.getStringList('notes') ?? [];
+    setState(() {
+      _notes.addAll(
+        notesJson.map((note) => Map<String, dynamic>.from(json.decode(note))),
+      );
+      _sortNotes();
+    });
+  }
+
+  Future<void> _loadSortPreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _sortBy = prefs.getString('sortBy') ?? 'newest';
+    });
+  }
+
+  Future<void> _saveNotes() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setStringList(
+      'notes',
+      _notes.map((note) => json.encode(note)).toList(),
+    );
+  }
+
+  Future<void> _saveSortPreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('sortBy', _sortBy);
+  }
+
+  void _sortNotes() {
+    setState(() {
+      if (_sortBy == 'newest') {
+        _notes.sort((a, b) => b['id'].compareTo(a['id']));
+      } else if (_sortBy == 'oldest') {
+        _notes.sort((a, b) => a['id'].compareTo(b['id']));
+      } else if (_sortBy == 'title') {
+        _notes.sort((a, b) => a['title'].compareTo(b['title']));
+      }
+    });
+  }
 
   void _addNewNote() {
     final newNote = {
@@ -30,6 +83,8 @@ class _NotebookfState extends State<Notebookf> {
               onSave: (updatedNote) {
                 setState(() {
                   _notes.insert(0, updatedNote);
+                  _sortNotes();
+                  _saveNotes();
                 });
               },
             ),
@@ -47,6 +102,8 @@ class _NotebookfState extends State<Notebookf> {
               onSave: (updatedNote) {
                 setState(() {
                   _notes[index] = updatedNote;
+                  _sortNotes();
+                  _saveNotes();
                 });
               },
             ),
@@ -57,6 +114,7 @@ class _NotebookfState extends State<Notebookf> {
   void _deleteNote(int index) {
     setState(() {
       _notes.removeAt(index);
+      _saveNotes();
     });
   }
 
@@ -66,18 +124,76 @@ class _NotebookfState extends State<Notebookf> {
       backgroundColor: BrandColors.black,
       appBar: AppBar(
         backgroundColor: BrandColors.black,
-        title: Text(
-          context.tr('notebook'),
-          style: GoogleFonts.roboto(
-            fontSize: 25,
-            color: BrandColors.block,
-            fontWeight: FontWeight.w600,
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            context.tr('notebook'),
+            style: GoogleFonts.roboto(
+              fontSize: 25,
+              color: BrandColors.block,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
         actions: [
           Row(
             children: [
+              DropdownButton<String>(
+                value: _sortBy,
+                dropdownColor: BrandColors.darkbackground,
+                alignment: Alignment.center,
+                underline: Container(),
+                items: [
+                  DropdownMenuItem(
+                    value: 'newest',
+                    child: Center(
+                      child: Text(
+                        context.tr('newest'),
+                        style: GoogleFonts.roboto(
+                          fontSize: 18,
+                          color: BrandColors.block,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 'oldest',
+                    child: Center(
+                      child: Text(
+                        context.tr('oldest'),
+                        style: GoogleFonts.roboto(
+                          fontSize: 18,
+                          color: BrandColors.block,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 'title',
+                    child: Center(
+                      child: Text(
+                        context.tr('alphabet'),
+                        style: GoogleFonts.roboto(
+                          fontSize: 18,
+                          color: BrandColors.block,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _sortBy = value!;
+                    _sortNotes();
+                    _saveSortPreference();
+                  });
+                },
+              ),
+              SizedBox(width: 5),
               IconButton(
                 onPressed: () => context.go('/settings'),
                 icon: Icon(Icons.settings, color: BrandColors.purple),
@@ -98,7 +214,7 @@ class _NotebookfState extends State<Notebookf> {
                       size: 64,
                       color: BrandColors.subTextDark,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Text(
                       context.tr('notes'),
                       style: TextStyle(
@@ -110,13 +226,13 @@ class _NotebookfState extends State<Notebookf> {
                 ),
               )
               : ListView.builder(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 itemCount: _notes.length,
                 itemBuilder: (context, index) {
                   final note = _notes[index];
                   return Card(
                     color: BrandColors.darkbackground,
-                    margin: const EdgeInsets.only(bottom: 12),
+                    margin: EdgeInsets.only(bottom: 12),
                     child: ListTile(
                       title: Text(
                         note['title'].isEmpty

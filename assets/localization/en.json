@@ -6,5 +6,9 @@
     "note": "Note",
     "description": "Description",
     "title": "Title",
-    "notitle": "No title"
+    "notitle": "No title",
+    "alphabet": "Alphabet",
+    "newest": "Newest",
+    "oldest": "Oldest"
+
 }
