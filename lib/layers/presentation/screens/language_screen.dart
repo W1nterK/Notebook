@@ -33,9 +33,11 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   onPressed:
                       () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SettingsScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => SettingsScreen(),
+                        ),
                       ),
-                  icon: Icon(CupertinoIcons.back, color: BrandColors.block,),
+                  icon: Icon(CupertinoIcons.back, color: BrandColors.block),
                 ),
               ),
               Text(
@@ -44,7 +46,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   fontSize: 25,
                   color: BrandColors.block,
                   fontWeight: FontWeight.w700,
-                  decoration: TextDecoration.none
+                  decoration: TextDecoration.none,
                 ),
               ),
               SizedBox(width: 50),
@@ -55,40 +57,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
             child: Column(
               children: [
                 GestureDetector(
-                 onTap: () { 
-                  
-                        context.setLocale(Locale('ru'));
-                    
-                         },
-                  child: Container(
-                    height: 60,
-                    width: 400,
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: BrandColors.darkbackground
-                    ),
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        Icon(Icons.language, color: BrandColors.purple,),
-                        SizedBox(width: 20),
-                        Text(
-                        'Русский',
-                          style: GoogleFonts.roboto(
-                            fontSize: 15,
-                            color: BrandColors.block,
-                            decoration: TextDecoration.none
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                 SizedBox(height: 15),
-                GestureDetector(
-                  onTap: () { 
-                        context.setLocale(Locale('en')); },
+                  onTap: () {
+                    context.setLocale(Locale('ru'));
+                  },
                   child: Container(
                     height: 60,
                     width: 400,
@@ -100,25 +71,53 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     alignment: Alignment.centerLeft,
                     child: Row(
                       children: [
-                        Icon(Icons.language, color: BrandColors.purple,),
+                        Icon(Icons.language, color: BrandColors.purple),
                         SizedBox(width: 20),
                         Text(
-                        'English',
+                          'Русский',
                           style: GoogleFonts.roboto(
                             fontSize: 15,
                             color: BrandColors.block,
-                            decoration: TextDecoration.none
+                            decoration: TextDecoration.none,
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    context.setLocale(Locale('en'));
+                  },
+                  child: Container(
+                    height: 60,
+                    width: 400,
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: BrandColors.darkbackground,
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: [
+                        Icon(Icons.language, color: BrandColors.purple),
+                        SizedBox(width: 20),
+                        Text(
+                          'English',
+                          style: GoogleFonts.roboto(
+                            fontSize: 15,
+                            color: BrandColors.block,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          
         ],
       ),
     );

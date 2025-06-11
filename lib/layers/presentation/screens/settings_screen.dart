@@ -31,7 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 alignment: Alignment.center,
                 child: IconButton(
-                  onPressed: () => context.go('/first'),
+                  onPressed: () => context.push('/first'),
                   icon: Icon(CupertinoIcons.back, color: BrandColors.block,),
                 ),
               ),
