@@ -195,7 +195,7 @@ class _NotebookfState extends State<Notebookf> {
               ),
               SizedBox(width: 5),
               IconButton(
-                onPressed: () => context.go('/settings'),
+                onPressed: () => context.push('/settingss'),
                 icon: Icon(Icons.settings, color: BrandColors.purple),
               ),
               SizedBox(width: 6),

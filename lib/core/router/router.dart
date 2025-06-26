@@ -10,14 +10,16 @@ class RouterConfigGO {
       GoRoute(
         path: '/first',
         builder: (context, state) => Notebookf(),
+        routes: [],
+      ),
+      GoRoute(
+        path: '/settingss',
+        builder: (context, state) => SettingsScreen(),
         routes: [
-          GoRoute(
-            path: '/settings',
-            builder: (context, state) => SettingsScreen(),
-          ),
           GoRoute(
             path: '/language',
             builder: (context, state) => LanguageScreen(),
+            routes: [],
           ),
         ],
       ),
